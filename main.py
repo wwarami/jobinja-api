@@ -1,6 +1,6 @@
-from src.get_cookie import get_cookie, save_cookies
+from crawler.get_cookie import get_cookie, save_cookies
 import argparse
-from src.validators import email_validator
+from crawler.validators import email_validator
 
 
 def cookies(email, password):

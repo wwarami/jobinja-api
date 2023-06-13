@@ -3,9 +3,10 @@ import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from config.config import COOKIES_JSON_PATH
 
 JOBINJA_LOGIN_URL = 'https://jobinja.ir/login/user'
-COOKIES_FILE = 'config/cookies.json'
+COOKIES_FILE = COOKIES_JSON_PATH
 
 
 def get_cookie(email: str, password: str):
