@@ -29,8 +29,8 @@ def get_cookie(email: str, password: str):
         driver.find_element(By.XPATH, '/html/body/div/header/div[2]/div')
     except NoSuchElementException:
         # handle not found element error and returning user info
-        print("You're email address or password is wrong!\n \
-        Recheck them please.")
+        print("You're email address or password is wrong!\n\
+Recheck them please.")
         sys.exit()
     else:
         # return the cookie
