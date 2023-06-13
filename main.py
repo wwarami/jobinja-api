@@ -1,4 +1,5 @@
 from crawler.get_cookie import get_cookie, save_cookies
+from crawler.crawler import GetJobs
 import argparse
 from crawler.validators import email_validator
 
@@ -16,14 +17,24 @@ Use "-e" for email and "-p" for password.')
     save_cookies(cookies=response)
 
 
+def get_jobs():
+    crawler = GetJobs(page=10)
+    crawler.start()
+    links = crawler.links
+    print(len(links))
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='Jobinja Crawler')
     parser.add_argument('--cookies', action='store_true')
+    parser.add_argument('--get-jobs', action='store_true')
     parser.add_argument('-e', '--email', type=str)
     parser.add_argument('-p', '--password', type=str)
     args = parser.parse_args()
 
     if args.cookies:
         cookies(email=args.email, password=args.password)
+    elif args.get_jobs:
+        get_jobs()
     else:
         raise NotImplementedError()

@@ -1,13 +1,9 @@
-COOKIES_JSON_PATH = '../config/cookies.json'
+COOKIES_JSON_PATH = 'config/cookies.json'
 REQUEST_USER_AGENT = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0'
 JOBINJA_JOBS_URL = 'https://jobinja.ir/jobs'
 
-URL_FILTERS = {
-    'categories': tuple(),
-    'locations': tuple(),
-    'keywords': str()
-}
 
+# the following data is only for validation.
 JOB_CATEGORIES = ('فروش و بازاریابی', 'وب،\u200c برنامه\u200cنویسی و نرم\u200cافزار', 'مالی و حسابداری', 'مسئول دفتر، '
                                                                                                          'اجرائی و '
                                                                                                          'اداری',
