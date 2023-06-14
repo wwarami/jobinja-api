@@ -2,7 +2,7 @@ import json
 from abc import ABC, abstractmethod
 import requests
 from config.config import COOKIES_JSON_PATH, REQUEST_USER_AGENT, JOBINJA_JOBS_URL
-from parser import JobsParser, JobDetailParser
+from crawler.parser import JobsParser, JobDetailParser
 
 
 class BaseCrawler(ABC):
@@ -46,6 +46,32 @@ Check for "COOKIES_JSON_PATH".')
     @abstractmethod
     def start(self, *args):
         pass
+
+
+class GetJobDetail(BaseCrawler):
+    URL = None
+
+    def start(self, url: str):
+        if url is None:
+            raise AttributeError('You should provide a url to get job detail.')
+        self.URL = url
+        source, url, status = self.get_source()
+        return self.parser(source)
+
+    def get_source(self):
+        # get jobs detail source code
+        try:
+            response = self.session.get(self.URL)
+        except requests.RequestException as error:
+            raise Exception(f'Something went wrong while connecting to {self.URL}.\nDetail: {error}')
+        # handle 404 error
+        if response.status_code == 404:
+            raise Exception(f"404 Error: Your provided url does not exists.\n {self.URL}")
+
+        return response.text, response.url, response.status_code
+
+    def parser(self, source):
+        return dict(url=self.URL, detail=JobDetailParser(source).start())
 
 
 class GetJobs(BaseCrawler):
@@ -117,30 +143,17 @@ class GetJobs(BaseCrawler):
     def links(self):
         return tuple(self._LINKS)
 
-
-class GetJobDetail(BaseCrawler):
-    URL = None
-
-    def start(self, url: str):
-        if url is None:
-            raise AttributeError('You should provide a url to get job detail.')
-        self.URL = url
-        source, url, status = self.get_source()
-        return self.parser(source)
-
-    def get_source(self):
-        # get jobs detail source code
-        try:
-            response = self.session.get(self.URL)
-        except requests.RequestException as error:
-            raise Exception(f'Something went wrong while connecting to {self.URL}.\nDetail: {error}')
-        # handle 404 error
-        if response.status_code == 404:
-            raise Exception(f"404 Error: Your provided url does not exists.\n {self.URL}")
-
-        return response.text, response.url, response.status_code
-
-    def parser(self, source):
-        return JobDetailParser(source).start()
+    def get_jobs_detail(self, crawler=GetJobDetail()):
+        """
+        this method will use GetJobDetail crawler to crawl each links.
+        this will keep our main.py file clean.
+        """
+        final_crawled = list()
+        for link in self.links:
+            result = crawler.start(link)
+            final_crawled.append(dict(url=link,
+                                      detail=result))
+            print(f'id: {result["detail"]["job_id"]} job parsed.')
+        return final_crawled
 
 
