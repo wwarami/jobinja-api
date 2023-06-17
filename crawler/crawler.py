@@ -52,8 +52,6 @@ class GetJobDetail(BaseCrawler):
     URL = None
 
     def start(self, url: str):
-        if url is None:
-            raise AttributeError('You should provide a url to get job detail.')
         self.URL = url
         source, url, status = self.get_source()
         return self.parser(source)
@@ -139,11 +137,7 @@ class GetJobs(BaseCrawler):
         """
         return JobsParser(source).start()
 
-    @property
-    def links(self):
-        return tuple(self._LINKS)
-
-    def get_jobs_detail(self, crawler=GetJobDetail()):
+    def get_jobs_detail(self, crawler :GetJobDetail=GetJobDetail()):
         """
         this method will use GetJobDetail crawler to crawl each links.
         this will keep our main.py file clean.
@@ -153,7 +147,8 @@ class GetJobs(BaseCrawler):
             result = crawler.start(link)
             final_crawled.append(dict(url=link,
                                       detail=result))
-            print(f'id: {result["detail"]["job_id"]} job parsed.')
-        return final_crawled
-
-
+        return tuple(final_crawled)
+    
+    @property
+    def links(self):
+        return tuple(self._LINKS)
