@@ -1,6 +1,7 @@
 COOKIES_JSON_PATH = 'config/cookies.json'
 REQUEST_USER_AGENT = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0'
 JOBINJA_JOBS_URL = 'https://jobinja.ir/jobs'
+JOBINJA_LOGIN_URL = 'https://jobinja.ir/login/user'
 
 
 # the following data is only for validation.

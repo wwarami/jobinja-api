@@ -30,10 +30,15 @@ def get_jobs(config, detail=True):
         raise Exception("Something is wrong with your config file.\nRead crawler's documentation for more detail.")
 
     # create an instance of jobs crawler using provided filter
-    jobs_crawler = GetJobs(page=filters['page'],
-                           keywords=filters['keywords'],
-                           categories=filters['categories'],
-                           locations=filters['locations'])
+    try:
+        jobs_crawler = GetJobs(page=filters['page'],
+                            keywords=filters['keywords'],
+                            categories=filters['categories'],
+                            locations=filters['locations'])
+    except KeyError:
+        # handle config files problems
+        raise KeyError("Something is wrong with your config file.\nRead crawler's documentation for more detail.")
+    
     jobs_crawler.start()  # crawl
     links = jobs_crawler.links
     print(f'{len(links)} jobs were crawled...')
@@ -42,6 +47,8 @@ def get_jobs(config, detail=True):
     if detail:
         result = jobs_crawler.get_jobs_detail()
         print(f'\nCrawling result: {result}')
+    else:
+        print(f'Links: {links}')
 
 
 def get_job_detail(url):
@@ -53,6 +60,8 @@ def get_job_detail(url):
 
 
 if __name__ == '__main__':
+    print("THIS IS ONLT FOR TESTING...")
+
     parser = argparse.ArgumentParser(prog='Jobinja Crawler')
 
     parser.add_argument('--cookies',
@@ -93,4 +102,4 @@ file for filters(or you will get all available jobs on jobinja.ir....).")
     elif args.jobdetail:
         get_job_detail(args.url)
     else:
-        raise NotImplementedError()
+        print("Please provide a command.\nRun 'python main.py -h' for help.")

@@ -4,8 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from config.config import COOKIES_JSON_PATH
+from config.config import JOBINJA_LOGIN_URL
 
-JOBINJA_LOGIN_URL = 'https://jobinja.ir/login/user'
 COOKIES_FILE = COOKIES_JSON_PATH
 
 
