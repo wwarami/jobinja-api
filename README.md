@@ -9,7 +9,26 @@
 #### 2- استفاده از API
 **[آموزش استفاده به وسیله API](https://github.com/errornight/jobinja-api#آموزش-استفده-با-API)**
 
-## آموزش استفده در محیط ترمینال
+# آموزش استفاده
+1- در محله اول یک virtual environment بسازید
+``` commandline
+python -m venv venv
+```
+2- فعالش کنید
+
+*linux*
+``` commandline
+source venv/bin/activate
+```
+*windows*
+``` commandline
+venv/source/activate
+```
+3- پکیج های ابزار رو نصب کنید
+```commandline
+pip install -r requirements.txt
+```
+### آموزش استفاده در محیط ترمینال
 1- در مرحله اول فایل config.json رو باز کنید و در آن اطلاعات جستوجوی مورد نظر تونو وارد کنید. مثل این نمونه:
 ``` json
 {
@@ -20,17 +39,17 @@
 }
 ```
 2- حالا این دستور رو وارد کنید.
-``` terminal
+``` commandline
 python main.py --jobs --config config.json
 ```
 *در این حالت تنها لینک آگهی هارا به شما میدهد. اگر اطلاعات هر آگهی رو هم میخواهید، دستور --detail رو هم اضافه کنید*
-``` terminal
+``` commandline
 python main.py --jobs --config config.json --detail
 ```
 
-## آموزش استفده با API
-در1- این دستور را وارد کنید.
-``` terminal
+### آموزش استفاده با API
+1- با uvicorn ابزار رو اجرا کنید
+``` commandline
 uvicorn api:app --reload
 ```
 2- حالا آدرس http://127.0.0.1:8000/docs را در مرورگر وارد کنید و به کمک ابزار Swagger UI از API استفاده کنید.
