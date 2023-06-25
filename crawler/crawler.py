@@ -4,7 +4,6 @@ import requests
 from config.config import COOKIES_JSON_PATH, REQUEST_USER_AGENT, JOBINJA_JOBS_URL
 from crawler.parser import JobsParser, JobDetailParser
 
-
 class BaseCrawler(ABC):
     _instance = None
 
@@ -69,7 +68,7 @@ class GetJobDetail(BaseCrawler):
         return response.text, response.url, response.status_code
 
     def parser(self, source):
-        return dict(url=self.URL, detail=JobDetailParser(source).start())
+        return dict(url=self.URL, **JobDetailParser(source).start())
 
 
 class GetJobs(BaseCrawler):
@@ -137,18 +136,18 @@ class GetJobs(BaseCrawler):
         """
         return JobsParser(source).start()
 
-    def get_jobs_detail(self, crawler :GetJobDetail=GetJobDetail()):
+    def get_jobs_detail(self, crawler: GetJobDetail = GetJobDetail()):
         """
         this method will use GetJobDetail crawler to crawl each links.
         this will keep our main.py file clean.
         """
-        final_crawled = list()
-        for link in self.links:
-            result = crawler.start(link)
-            final_crawled.append(dict(url=link,
-                                      detail=result))
-        return tuple(final_crawled)
-    
+        job_detail_crawler = crawler
+        jobs = list()
+        links = self.links
+        for link in links:
+            jobs.append(job_detail_crawler.start(link))
+        return jobs
+
     @property
     def links(self):
         return tuple(self._LINKS)

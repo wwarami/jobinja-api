@@ -7,7 +7,7 @@ from crawler.validators import email_validator
 
 def cookies(email, password):
     # check if provided email and password is validated.
-    if email is  None or not email_validator(email) or password is None:
+    if email is None or not email_validator(email) or password is None:
         raise ValueError('To get cookies you should provide\
  "email" and "password" for your jobinja account.\n\
 Your info will only be used to login and get cookies.(read the source code.)\n\
@@ -32,19 +32,20 @@ def get_jobs(config, detail=True):
     # create an instance of jobs crawler using provided filter
     try:
         jobs_crawler = GetJobs(page=filters['page'],
-                            keywords=filters['keywords'],
-                            categories=filters['categories'],
-                            locations=filters['locations'])
+                               keywords=filters['keywords'],
+                               categories=filters['categories'],
+                               locations=filters['locations'])
     except KeyError:
         # handle config files problems
         raise KeyError("Something is wrong with your config file.\nRead crawler's documentation for more detail.")
-    
+
     jobs_crawler.start()  # crawl
     links = jobs_crawler.links
     print(f'{len(links)} jobs were crawled...')
 
     # get each jobs detail
     if detail:
+        print("Crawling job details...")
         result = jobs_crawler.get_jobs_detail()
         print(f'\nCrawling result: {result}')
     else:
@@ -60,7 +61,7 @@ def get_job_detail(url):
 
 
 if __name__ == '__main__':
-    print("THIS IS ONLT FOR TESTING...")
+    print("THIS IS ONLY FOR TESTING...")
 
     parser = argparse.ArgumentParser(prog='Jobinja Crawler')
 
